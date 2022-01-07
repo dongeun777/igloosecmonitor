@@ -149,6 +149,12 @@ public class HomeController {
         return "policy";
     }
 
+    @GetMapping("/policy_en")
+    public String policy_en(Model model) {
+
+        return "policy_en";
+    }
+
     @GetMapping("/reset")
     public String reset(Model model) {
 
@@ -1556,6 +1562,12 @@ public class HomeController {
                 new InternetAddress(email));
         mimeMessage.setSubject("SPiDER TM Login Information");
 
+        UsageVo list = homeService.selectShellParam(email);
+        String port_jp = "";
+        if (list.getCountry().equals("JP")){
+            port_jp = ":10443";
+        }
+
 //        mimeMessage.setContent("<h1 style='font-size: 20px;'><a href='https://"+emailstr+".igloocld.com'>https://"+emailstr +".igloocld.com </a>에 접속하셔서, 로그인하시기 바랍니다.</h1>"+
 //                "\n<span style='font-weight: bold;'>ID: </span> <span>  tmadmin<br></span>\n" + "<span style='font-weight: bold;'>pw: </span> <span> 0!password  </span>" , "text/html; charset=UTF-8");
 
@@ -1793,7 +1805,7 @@ public class HomeController {
                 "\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"550\">\n" +
                 "\t\t<tbody><tr>\n" +
                 "\t\t\t<td width=\"30%\" valign=\"top\"><strong class=\"\">TM URL:</strong></td>\n" +
-                "\t\t\t<td> <a href='https://"+emailstr+".igloocld.com' style=\"color:#E20082;text-decoration:none;\" data-targettype=\"webpage\">https://"+emailstr +".igloocld.com  </a></td>\n" +
+                "\t\t\t<td> <a href='https://"+emailstr+".igloocld.com"+port_jp+"' style=\"color:#E20082;text-decoration:none;\" data-targettype=\"webpage\">https://"+emailstr +".igloocld.com"+port_jp+"  </a></td>\n" +
                 "\t\t</tr>\n" +
                 "\t\t<tr><td width=\"30%\" valign=\"top\"><strong class=\"\">User Name:</strong></td>\n" +
                 "\t\t\t<td> tmadmin</td></tr>\n" +
@@ -1877,6 +1889,9 @@ public class HomeController {
                     + result.getCountry() + " " + result.getProduct() + " " + result.getVendor());
             //System.out.println(result.getPathStr());
         } else {
+            logger.info("[shellVMcreate] " + result.getPathStr()+"/"+result.getShellcom()+" "+result.getEmailparam()+" "+result.getVmseries()+" "+emailStr + " "
+                    + result.getCountry() + " " + result.getProduct() + " " + result.getVendor());
+
             //Runtime.getRuntime().exec().
             process = Runtime.getRuntime()
                     .exec(result.getPathStr()+"/"+result.getShellcom()+" "+result.getEmailparam()+" "+result.getVmseries()+" "+emailStr + " "

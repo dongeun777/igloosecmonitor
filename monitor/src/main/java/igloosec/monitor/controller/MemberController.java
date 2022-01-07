@@ -126,6 +126,11 @@ public class MemberController {
 
         }
 
+        String emailStr = memberVo.getEmail();
+        String emailStr2 = emailStr.replace("@","");
+        emailStr2 = emailStr2.replace(".","");
+        memberVo.setApplyId(emailStr2);
+
         memberService.deleteUser(memberVo);
 
         return "redirect:/member";

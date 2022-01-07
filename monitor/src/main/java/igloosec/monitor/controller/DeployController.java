@@ -919,6 +919,12 @@ public class DeployController {
                 new InternetAddress(emailStr2));
         mimeMessage.setSubject("SPiDER TM Login Information");
 
+        UsageVo list = deployService.selectShellParam(email);
+        String port_jp = "";
+        if (list.getCountry().equals("JP")){
+            port_jp = ":10443";
+        }
+
 //        mimeMessage.setContent("<h1 style='font-size: 20px;'><a href='https://"+emailstr+".igloocld.com'>https://"+emailstr +".igloocld.com </a>에 접속하셔서, 로그인하시기 바랍니다.</h1>"+
 //                "\n<span style='font-weight: bold;'>ID: </span> <span>  tmadmin<br></span>\n" + "<span style='font-weight: bold;'>pw: </span> <span> 0!password  </span>" , "text/html; charset=UTF-8");
 
@@ -1156,7 +1162,7 @@ public class DeployController {
                 "\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"550\">\n" +
                 "\t\t<tbody><tr>\n" +
                 "\t\t\t<td width=\"30%\" valign=\"top\"><strong class=\"\">TM URL:</strong></td>\n" +
-                "\t\t\t<td> <a href='https://"+emailstr+".igloocld.com' style=\"color:#E20082;text-decoration:none;\" data-targettype=\"webpage\">https://"+emailstr +".igloocld.com  </a></td>\n" +
+                "\t\t\t<td> <a href='https://"+emailstr+".igloocld.com"+port_jp+"' style=\"color:#E20082;text-decoration:none;\" data-targettype=\"webpage\">https://"+emailstr +".igloocld.com"+port_jp+"  </a></td>\n" +
                 "\t\t</tr>\n" +
                 "\t\t<tr><td width=\"30%\" valign=\"top\"><strong class=\"\">User Name:</strong></td>\n" +
                 "\t\t\t<td> tmadmin</td></tr>\n" +
@@ -1241,6 +1247,10 @@ public class DeployController {
             //System.out.println(result.getPathStr());
         } else {
             //Runtime.getRuntime().exec().
+
+            logger.info("[shellVMcreate] " + result.getPathStr()+"/"+result.getShellcom()+" "+result.getEmailparam()+" "+result.getVmseries()+" "+emailStr + " "
+                    + result.getCountry() + " " + result.getProduct() + " " + result.getVendor());
+
             process = Runtime.getRuntime()
                     .exec(result.getPathStr()+"/"+result.getShellcom()+" "+result.getEmailparam()+" "+result.getVmseries()+" "+emailStr + " "
                             + result.getCountry() + " " + result.getProduct() + " " + result.getVendor());
